@@ -14,6 +14,7 @@ import de.smartheating.SmartHeatingCommons.communication.RepositoryClient;
 import de.smartheating.SmartHeatingCommons.exceptions.ProfileNotSetException;
 import de.smartheating.SmartHeatingCommons.persistedData.Device;
 import de.smartheating.SmartHeatingCommons.persistedData.Event;
+import de.smartheating.inputAdapter.rabbitmq.MessageProducer;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -23,13 +24,15 @@ public class InputController {
 	
 	@Autowired
 	RepositoryClient repoClient;
+	@Autowired
+	MessageProducer producer;
 
 	@PostMapping(value = "/device", produces = "application/json")
 	@ApiOperation(value = "This event prepares a device for usage")
 	public ResponseEntity<?> prepareDevice(@RequestBody Device device) {
 		try {
+			logger.info("Got request to prepare a new device with the name: " + device.getDeviceName());
 			Device preparedDevice = repoClient.addDevice(device);
-			logger.info("Got request to add a new device with the name: " + device.getDeviceName());
 			return new ResponseEntity<>(preparedDevice, HttpStatus.OK);
 		} catch (RestClientException e) {
 			logger.error("Connection with Repository-Service failed");
@@ -44,7 +47,17 @@ public class InputController {
 	@PostMapping(value = "/event", produces = "application/json")
 	@ApiOperation(value = "This endpoint prepares an incoming event for processng")
 	public ResponseEntity<?> prepareEvent(@RequestBody Event event) {
-		logger.info("Got request to prepare an event for processing");
-		return new ResponseEntity<>("Done", HttpStatus.OK);
+		try {
+			logger.info("Got request to prepare an event for processing");
+			Event preparedEvent = repoClient.addEvent(event);
+			producer.sendEvent(preparedEvent);
+			return new ResponseEntity<>(preparedEvent, HttpStatus.OK);
+		} catch (RestClientException e) {
+			logger.error("Connection with Repository-Service failed");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (ProfileNotSetException e) {
+			logger.error("Spring-Profile not set");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
