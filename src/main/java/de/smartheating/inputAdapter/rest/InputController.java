@@ -33,7 +33,7 @@ public class InputController {
 		try {
 			logger.info("Got request to prepare a new device with the name: " + device.getDeviceName());
 			Device preparedDevice = repoClient.addDevice(device);
-			return new ResponseEntity<>(preparedDevice, HttpStatus.OK);
+			return new ResponseEntity<>(preparedDevice.getId(), HttpStatus.OK);
 		} catch (RestClientException e) {
 			logger.error("Connection with Repository-Service failed");
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,7 +51,7 @@ public class InputController {
 			logger.info("Got request to prepare an event for processing");
 			Event preparedEvent = repoClient.addEvent(event);
 			producer.sendEvent(preparedEvent);
-			return new ResponseEntity<>(preparedEvent, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RestClientException e) {
 			logger.error("Connection with Repository-Service failed");
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
