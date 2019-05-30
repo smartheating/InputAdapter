@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClientException;
 import de.smartheating.SmartHeatingCommons.communication.RepositoryClient;
 import de.smartheating.SmartHeatingCommons.exceptions.ProfileNotSetException;
 import de.smartheating.SmartHeatingCommons.persistedData.Device;
-import de.smartheating.SmartHeatingCommons.persistedData.SensorEvent;
+import de.smartheating.SmartHeatingCommons.persistedData.Event;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -43,7 +43,7 @@ public class InputController {
 	
 	@PostMapping(value = "/event", produces = "application/json")
 	@ApiOperation(value = "This endpoint prepares an incoming event for processng")
-	public ResponseEntity<?> prepareEvent(@RequestBody SensorEvent event) {
+	public ResponseEntity<?> prepareEvent(@RequestBody Event event) {
 		logger.info("Got request to prepare an event for processing");
 		return new ResponseEntity<>("Done", HttpStatus.OK);
 	}
