@@ -1,0 +1,17 @@
+version: '3.7'
+
+services: 
+  inputadapter-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inputadapter
+    ports:
+      - 9013:9013
+    container_name: inputadapter
+    hostname: inputadapter
+
+networks:
+  default:
+    external:
+      name: smartheating
