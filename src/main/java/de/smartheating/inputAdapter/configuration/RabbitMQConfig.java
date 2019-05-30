@@ -6,14 +6,10 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import de.smartheating.inputAdapter.rabbitmq.MessageConsumer;
 
 @Configuration
 public class RabbitMQConfig {
@@ -49,23 +45,6 @@ public class RabbitMQConfig {
     @Bean
     Binding binding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(RABBITMQ_ROUTINGKEY);
-    }
-    
-    @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-            MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(RABBITMQ_QUEUE);
-        container.setMessageListener(listenerAdapter);
-        return container;
-    }
-    
-    @Bean
-    MessageListenerAdapter listenerAdapter(MessageConsumer consumer, MessageConverter messageConverter) {
-    	MessageListenerAdapter adapter = new MessageListenerAdapter(consumer, messageConverter);
-    	adapter.setDefaultListenerMethod("consumeEvent");
-        return adapter;
     }
    
 }
