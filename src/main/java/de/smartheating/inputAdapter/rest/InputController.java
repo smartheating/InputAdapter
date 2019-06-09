@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
-import de.smartheating.SmartHeatingCommons.communication.DiscoveryService;
-import de.smartheating.SmartHeatingCommons.communication.RepositoryClient;
 import de.smartheating.SmartHeatingCommons.persistedData.Device;
 import de.smartheating.SmartHeatingCommons.persistedData.Event;
+import de.smartheating.SmartHeatingCommons.restcommunication.RepositoryClient;
+import de.smartheating.SmartHeatingCommons.services.DiscoveryService;
 import de.smartheating.inputAdapter.rabbitmq.MessageProducer;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
