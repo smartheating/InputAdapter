@@ -35,8 +35,7 @@ public class InputController {
 	public ResponseEntity<?> prepareDevice(@RequestBody Device device) {
 		try {
 			logger.info("Got request to prepare a new device with the name: " + device.getDeviceName());
-			Device preparedDevice = repoClient
-					.addDevice(discoveryService.getServiceInstance("repository").getUri().toString(), device);
+			Device preparedDevice = repoClient.addDevice(discoveryService.getServiceUrl("repository"), device);
 			return new ResponseEntity<>(preparedDevice.getId(), HttpStatus.OK);
 		} catch (RestClientException e) {
 			logger.error("Connection with Repository-Service failed");
@@ -53,8 +52,7 @@ public class InputController {
 	public ResponseEntity<?> prepareEvent(@RequestBody Event event) {
 		try {
 			logger.info("Got request to prepare an event for processing");
-			Event preparedEvent = repoClient
-					.addEvent(discoveryService.getServiceInstance("repository").getUri().toString(), event);
+			Event preparedEvent = repoClient.addEvent(discoveryService.getServiceUrl("repository"), event);
 			producer.sendEvent(preparedEvent);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RestClientException e) {
