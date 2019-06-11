@@ -54,3 +54,4 @@ eureka:
     enabled: true
   instance:
     preferIpAddress: true
+    ip-address: ${PRIVATE_IP}
