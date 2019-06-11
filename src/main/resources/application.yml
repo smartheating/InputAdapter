@@ -54,4 +54,4 @@ eureka:
     enabled: true
   instance:
     preferIpAddress: true
-    ip-address: ${PRIVATE_IP}
+    homePageUrl: http://${PRIVATE_IP}:9013/
