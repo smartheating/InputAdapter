@@ -1,4 +1,7 @@
 FROM maven:3-jdk-8
+RUN git clone https://github.com/smartheating/CommonsModule.git
+WORKDIR /CommonsModule
+RUN mvn clean install -DskipTests -q
 RUN git clone https://github.com/smartheating/InputAdapter.git
 WORKDIR /InputAdapter/
 RUN mvn clean install -DskipTests -q
