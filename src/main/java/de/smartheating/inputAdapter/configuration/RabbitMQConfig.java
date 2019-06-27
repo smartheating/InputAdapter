@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
 	public final static String RABBITMQ_QUEUE = "processing";
-	public final static String RABBITMQ_EXCHANGE = "directexchange";
+	public final static String RABBITMQ_EXCHANGE = "processing-exchange";
 	public final static String RABBITMQ_ROUTINGKEY = "to.processing";
 	
     @Bean

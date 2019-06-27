@@ -18,7 +18,7 @@ public class MessageProducer {
 	private RabbitTemplate rabbitTemplate;
 
 	public void sendEvent(Event event) {
-		logger.info("Published event to rabbitmq");
+		logger.info("Publishing event to rabbitmq");
 		rabbitTemplate.convertAndSend(RabbitMQConfig.RABBITMQ_EXCHANGE, RabbitMQConfig.RABBITMQ_ROUTINGKEY, event);
 	}
 }
